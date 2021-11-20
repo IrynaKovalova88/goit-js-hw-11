@@ -40,11 +40,11 @@ function onSearch(e) {
 }
 
 function onLoadMoreBtn() {
-  photosPixabay.searchPhotos().then(({ hits, totalHits, page, perPage }) => {
+  photosPixabay.searchPhotos().then(({ hits, totalHits, currentPage, perPage }) => {
     renderPhotos(hits);
     lightboxPhotos();
     scroll();
-    if (page < totalHits / perPage) {
+    if (currentPage < totalHits / perPage) {
       refs.loadMoreBtn.classList.add("is-hidden");
       return Notify.info(`We're sorry, but you've reached the end of search results.`);
     }
@@ -66,7 +66,7 @@ function scroll () {
   .firstElementChild.getBoundingClientRect();
 
 window.scrollBy({
-  top: cardHeight * 8,
+  top: cardHeight * 2,
   behavior: "smooth",
 });
 }
