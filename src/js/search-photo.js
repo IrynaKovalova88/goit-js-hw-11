@@ -6,8 +6,6 @@ export default class PhotosPixabay {
         this.page = 1;
         this.perPage = 40;
         this.totalHits = null;
-        this.totalPage = null;
-        this.endHits = false;
     }
     async searchPhotos() {
         const KEY = '24399627-fe2224483e9e3196e9df20926';

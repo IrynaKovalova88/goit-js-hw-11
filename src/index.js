@@ -19,18 +19,26 @@ refs.loadMoreBtn.addEventListener('click', onLoadMoreBtn);
 function onSearch(e) {
   e.preventDefault();
   photosPixabay.query = e.currentTarget.elements.searchQuery.value.trim();
+  refs.gallery.innerHTML = '';
+  refs.loadMoreBtn.classList.add('is-hidden');
+  refs.searchForm.reset();
 
-  if (photosPixabay.query === '') {
-    refs.loadMoreBtn.classList.add('is-hidden');
-    refs.gallery.innerHTML = '';
-    return Notify.failure(`Please, type your search query`);
-  }
   photosPixabay.resetPage();
-  photosPixabay.searchPhotos().then(({hits, totalHits}) => {
-    refs.gallery.innerHTML = '';
+  photosPixabay.searchPhotos().then(({ hits, totalHits }) => {
+    if (photosPixabay.query === '') {
+    Notify.failure(`Please, type your search query`);
+    return;
+  }
     if (hits.length === 0) {
-      refs.loadMoreBtn.classList.add('is-hidden');
-      return Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
+      Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
+      return;
+    }
+    if (hits.length < 40) {
+      Notify.info(`Hooray! We found ${totalHits} images.`);
+      Notify.info(`We're sorry, but you've reached the end of search results.`);
+      renderPhotos(hits);
+      lightboxPhotos();
+      return;
     }
     Notify.info(`Hooray! We found ${totalHits} images.`);
     renderPhotos(hits);
@@ -40,14 +48,10 @@ function onSearch(e) {
 }
 
 function onLoadMoreBtn() {
-  photosPixabay.searchPhotos().then(({ hits, totalHits, currentPage, perPage }) => {
+  photosPixabay.searchPhotos().then(({ hits }) => {
     renderPhotos(hits);
     lightboxPhotos();
     scroll();
-    if (currentPage < totalHits / perPage) {
-      refs.loadMoreBtn.classList.add("is-hidden");
-      return Notify.info(`We're sorry, but you've reached the end of search results.`);
-    }
   })
     }
 
@@ -70,3 +74,11 @@ window.scrollBy({
   behavior: "smooth",
 });
 }
+
+// let totalPage = Math.ceil(totalHits / perPage);
+//     if (page === totalPage) {
+//       endHits = true;
+//       Notify.info(`We're sorry, but you've reached the end of search results.`);
+//     }
+
+
