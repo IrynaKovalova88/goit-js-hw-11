@@ -1,3 +1,4 @@
+import 'material-icons/iconfont/material-icons.css';
 import './css/styles.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';

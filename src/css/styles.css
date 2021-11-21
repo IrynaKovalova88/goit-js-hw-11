@@ -42,19 +42,21 @@ p {
 }
 
 input {
-  margin-right: 15px;
-  width: 320px;
-  height: 35px;
+  margin-right: 0px;
+  width: 370px;
+  height: 40px;
   padding-left: 15px;
   font-size: 21px;
   border: 1px solid rgba(33, 33, 33, 0.2);
-  border-radius: 5px;
+  border-right: none;
+  border-radius: 5px 0 0 5px;
 }
 
 input:hover,
 input:focus {
   outline: none;
   border-color: rgb(108, 108, 207);
+  border-right: 1px solid rgb(108, 108, 207);
 }
 
 .container {
@@ -105,8 +107,8 @@ img {
 }
 
 .info {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   display: flex;
   justify-content: space-between;
   text-align: center;
@@ -114,6 +116,7 @@ img {
 
 .info-item {
   font-size: 18px;
+  font-style: italic;
   color: black;
 }
 
@@ -121,23 +124,53 @@ img {
   display: none;
 }
 
-button,
 .load-more-btn {
+  margin-top: 30px;
+  margin-bottom: 30px;
   font-size: 21px;
   font-weight: 500px;
-  padding: 5px 15px;
+  padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
   border: 1px solid rgba(33, 33, 33, 0.2);
 }
 
-button:hover,
-button:focus {
+.load-more-btn:hover,
+.load-more-btn:focus {
   border-color: rgb(108, 108, 207);
-  background-color: rgba(209, 236, 248, 0.9);
+  background-color: rgb(135, 175, 248, 0.9);
 }
 
-.load-more-btn {
-  margin-top: 30px;
-  margin-bottom: 30px;
+.material-icons-outlined {
+  font-weight: 400;
+  font-style: normal;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-family: Material Icons Outlined;
+  font-feature-settings: 'liga';
+  cursor: pointer;
+}
+
+.material-icons {
+  height: 40px;
+  border: 1px solid rgba(33, 33, 33, 0.2);
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+  padding: 3px 10px;
+}
+
+.material-icons:hover,
+.material-icons:focus {
+  border-color: rgb(108, 108, 207);
+  background-color: rgb(135, 175, 248, 0.9);
+  border-left: 1px solid rgb(108, 108, 207);
 }
