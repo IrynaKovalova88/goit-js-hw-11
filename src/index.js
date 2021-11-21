@@ -55,7 +55,7 @@ function endPhotos (totalHits, perPage, page) {
  const lastPage = 1 + Math.ceil(totalHits / perPage);
   if (page >= lastPage) {
    Notify.info(`We're sorry, but you've reached the end of search results.`);
-    refs.loadMoreBtn.classList.add("hidden");
+    return;
  }
 }
 
