@@ -25,7 +25,7 @@ function onSearch(e) {
   refs.searchForm.reset();
 
   photosPixabay.resetPage();
-  photosPixabay.searchPhotos().then(({ hits, totalHits }) => {
+  photosPixabay.searchPhotos().then(({ hits, totalHits, perPage, page }) => {
     if (photosPixabay.query === '') {
     Notify.failure(`Please, type your search query`);
     return;
@@ -34,27 +34,30 @@ function onSearch(e) {
       Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
       return;
     }
-    if (hits.length < 40) {
-      Notify.info(`Hooray! We found ${totalHits} images.`);
-      Notify.info(`We're sorry, but you've reached the end of search results.`);
-      renderPhotos(hits);
-      lightboxPhotos();
-      return;
-    }
     Notify.info(`Hooray! We found ${totalHits} images.`);
     renderPhotos(hits);
     lightboxPhotos();
     refs.loadMoreBtn.classList.remove('is-hidden');
+    endPhotos(totalHits, perPage, page);
   })
 }
 
 function onLoadMoreBtn() {
-  photosPixabay.searchPhotos().then(({ hits }) => {
+  photosPixabay.searchPhotos().then(({ hits, totalHits, perPage, page }) => {
     renderPhotos(hits);
     lightboxPhotos();
     scroll();
+    endPhotos(totalHits, perPage, page);
   })
-    }
+}
+    
+function endPhotos (totalHits, perPage, page) {
+ const lastPage = 1 + Math.ceil(totalHits / perPage);
+  if (page >= lastPage) {
+   Notify.info(`We're sorry, but you've reached the end of search results.`);
+    refs.loadMoreBtn.classList.add("hidden");
+ }
+}
 
 function renderPhotos(hits) {
     refs.gallery.insertAdjacentHTML('beforeend', photoCard(hits));
