@@ -23,41 +23,45 @@ function onSearch(e) {
   refs.gallery.innerHTML = '';
   refs.loadMoreBtn.classList.add('is-hidden');
   refs.searchForm.reset();
-
+  
   photosPixabay.resetPage();
-  photosPixabay.searchPhotos().then(({ hits, totalHits, perPage, page }) => {
+    photosPixabay.searchPhotos().then(({ hits, totalHits }) => {
     if (photosPixabay.query === '') {
-    Notify.failure(`Please, type your search query`);
-    return;
-  }
+      Notify.failure(`Please, type your search query`);
+      return;
+    }
     if (hits.length === 0) {
       Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
       return;
     }
-    Notify.info(`Hooray! We found ${totalHits} images.`);
-    renderPhotos(hits);
-    lightboxPhotos();
+      Notify.success(`Hooray! We found ${totalHits} images.`);
+      renderPhotos(hits);
+      lightboxPhotos();
     refs.loadMoreBtn.classList.remove('is-hidden');
-    endPhotos(totalHits, perPage, page);
+    endPhotos();
   })
 }
 
 function onLoadMoreBtn() {
-  photosPixabay.searchPhotos().then(({ hits, totalHits, perPage, page }) => {
+  photosPixabay.searchPhotos().then(({ hits }) => {
     renderPhotos(hits);
     lightboxPhotos();
+    photosPixabay.incrementPage();
     scroll();
-    endPhotos(totalHits, perPage, page);
+    endPhotos();
   })
 }
     
-function endPhotos (totalHits, perPage, page) {
- const lastPage = 1 + Math.ceil(totalHits / perPage);
-  if (page >= lastPage) {
-   Notify.info(`We're sorry, but you've reached the end of search results.`);
-    return;
- }
+function endPhotos() {
+  photosPixabay.searchPhotos().then(({ totalHits }) => {
+    let totalPages = Math.ceil(totalHits / photosPixabay.perPage);
+    if (photosPixabay.page === totalPages) {
+      Notify.info(`We're sorry, but you've reached the end of search results.`);
+      refs.loadMoreBtn.classList.add('is-hidden');
+    }
+  })
 }
+
 
 function renderPhotos(hits) {
     refs.gallery.insertAdjacentHTML('beforeend', photoCard(hits));
@@ -78,11 +82,5 @@ window.scrollBy({
   behavior: "smooth",
 });
 }
-
-// let totalPage = Math.ceil(totalHits / perPage);
-//     if (page === totalPage) {
-//       endHits = true;
-//       Notify.info(`We're sorry, but you've reached the end of search results.`);
-//     }
 
 

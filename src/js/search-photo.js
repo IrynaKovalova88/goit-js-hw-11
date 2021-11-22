@@ -11,9 +11,8 @@ export default class PhotosPixabay {
         const KEY = '24399627-fe2224483e9e3196e9df20926';
     axios.defaults.baseURL = 'https://pixabay.com/api';
   try {
-        const hits = await axios.get(`?key=${KEY}&q=${this.searchQuery}&page=${this.page}&per_page=${this.perPage}&image_type=photo&orientation=horizontal&safesearch=true`);
-        this.incrementPage();
-        return hits.data;
+        const resp = await axios.get(`?key=${KEY}&q=${this.searchQuery}&page=${this.page}&per_page=${this.perPage}&image_type=photo&orientation=horizontal&safesearch=true`);
+      return resp.data;
         } catch(error) {
       return error;
         }
